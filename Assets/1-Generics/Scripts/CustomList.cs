@@ -45,5 +45,40 @@ namespace Generics
             // Increment Amount
             amount++;
         }
+        public void Clear()
+        {
+            //Create a new null array
+            T[] cache = null;
+            //make the current list equal to the new null array
+            list = cache;
+            //make sure our amount is equal to zero
+            amount = 0;
+        }
+
+        public void AddRange(T[] items)
+        {
+            // make a new array of amount plus what we are adding
+            T[] cache = new T[amount + items.Length];
+            // Check if the list has been initialised
+            if(list != null)
+            {
+                for (int i = 0; i < list.Length; i++)
+                {
+                    // Copy our current List
+                    cache[i] = list[i];
+                }
+            }
+            //Place the new items into the array
+            int a = 0;
+            for (int i = list.Length; i < cache.Length; i++)
+            {
+                cache[i] = items[a];
+                a++;
+            }
+            // Replace old array with new array
+            list = cache;
+            // Increment Amount
+            amount+= items.Length;
+        }
     }
 }

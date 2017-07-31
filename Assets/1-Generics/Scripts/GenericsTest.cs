@@ -19,13 +19,26 @@ namespace Generics
                 Vector3 randomPos = transform.position + Random.insideUnitSphere * spawnRadius;
                 clone.transform.position = randomPos;
                 gameObjects.Add(clone);
+                
             }
+            Debug.Log(gameObjects.amount);
         }
 
         // Update is called once per frame
         void Update()
         {
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                gameObjects.Clear();
 
+                Debug.Log(gameObjects.amount);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                gameObjects.AddRange(GameObject.FindGameObjectsWithTag("Ball"));
+                Debug.Log(gameObjects.amount);
+            }
         }
     }
 }
