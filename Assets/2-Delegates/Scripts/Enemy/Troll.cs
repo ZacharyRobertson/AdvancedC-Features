@@ -10,10 +10,13 @@ namespace Delegates
         public float meleeDelay = 0.2f;
         public GameObject attackBox;
         private bool isAttacking = false;
+
+        public EnemySpawner spawner;
         // Use this for initialization
         void Start()
         {
-
+            spawner = GetComponentInParent<EnemySpawner>();
+            target = spawner.target;
         }
 
         // Update is called once per frame

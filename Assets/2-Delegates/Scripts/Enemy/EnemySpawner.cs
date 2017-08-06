@@ -22,6 +22,7 @@ namespace Delegates
         {
             enemyTypeFuncs.Add(SpawnOrc);
             enemyTypeFuncs.Add(SpawnTroll);
+            
         }
 
         // Update is called once per frame
@@ -36,11 +37,12 @@ namespace Delegates
 
         void SpawnOrc(int amount)
         {
-            GameObject clone = Instantiate(orcPrefab, transform.position, transform.rotation);
+            GameObject orcClone = Instantiate(orcPrefab, transform.position, transform.rotation, this.transform);
+
         }
         void SpawnTroll(int amount)
         {
-            Instantiate(trollPrefab, transform.position, transform.rotation);
+            GameObject trollClone = Instantiate(trollPrefab, transform.position, transform.rotation, this.transform);
         }
     }
 }
