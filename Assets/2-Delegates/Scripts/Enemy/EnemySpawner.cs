@@ -12,7 +12,7 @@ namespace Delegates
         public Transform target;
         public GameObject orcPrefab;
         public GameObject trollPrefab;
-        public int minAmount = 0, maxAmount = 20;
+        public int minAmount = 0, maxAmount = 5;
         public float spawnRate = 1f;
 
         int randomAmount;
@@ -22,7 +22,6 @@ namespace Delegates
         {
             enemyTypeFuncs.Add(SpawnOrc);
             enemyTypeFuncs.Add(SpawnTroll);
-            
         }
 
         // Update is called once per frame
@@ -37,12 +36,12 @@ namespace Delegates
 
         void SpawnOrc(int amount)
         {
-            GameObject orcClone = Instantiate(orcPrefab, transform.position, transform.rotation, this.transform);
-
+            GameObject clone = Instantiate(orcPrefab, transform.position, transform.rotation, this.transform);
         }
         void SpawnTroll(int amount)
         {
-            GameObject trollClone = Instantiate(trollPrefab, transform.position, transform.rotation, this.transform);
+            Instantiate(trollPrefab, transform.position, transform.rotation, this.transform);
+
         }
     }
 }
