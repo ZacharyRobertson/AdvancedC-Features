@@ -9,7 +9,6 @@ namespace AbstractClasses
     {
         public float acceleration = 25f;
         public float hyperSpeed = 150f;
-        public float decelration = 0.1f;
         public float rotationSpeed = 5f;
 
         public float inputV;
@@ -30,7 +29,6 @@ namespace AbstractClasses
         void FixedUpdate()
         {
             Accelerate();
-            Decelerate();
             Rotate();
         }
 
@@ -48,10 +46,6 @@ namespace AbstractClasses
             }
 
             rigid.AddForce(force);
-        }
-        void Decelerate()
-        {
-            rigid.velocity += -rigid.velocity * decelration;
         }
         void Rotate()
         {
