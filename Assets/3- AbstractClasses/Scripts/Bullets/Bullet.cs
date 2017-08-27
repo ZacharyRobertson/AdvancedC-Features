@@ -11,16 +11,16 @@ namespace AbstractClasses
         public float speed = 10f;
         public float aliveDistance = 5f;
 
-        private Rigidbody2D rigid;
-        private Vector3 shotPos;
+        public Rigidbody2D rigid;
+        public Vector3 shotPos;
         
          
         // Use this for initialization
-        void Awake()
+        protected virtual void Awake()
         {
             rigid = GetComponent<Rigidbody2D>();
         }
-        void Start()
+        protected virtual void Start()
         {
             // Record our starting position from the first frame
             shotPos = transform.position;
@@ -31,6 +31,6 @@ namespace AbstractClasses
         {
 
         }
-        public abstract void Fire();
+        public abstract void Fire(Vector2 direction, float? speed = null);
     }
 }

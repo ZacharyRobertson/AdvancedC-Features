@@ -8,13 +8,17 @@ namespace AbstractClasses
     [RequireComponent(typeof(Rigidbody2D))]
     public class Plasma : Bullet
     {
-        private Rigidbody2D rigid;
+        
         // Use this for initialization
-        void Awake()
+        protected override void Awake()
         {
-            rigid = GetComponent<Rigidbody2D>();
+            base.Awake();
         }
 
+        protected override void Start()
+        {
+            base.Start();
+        }
         // Update is called once per frame
         void Update()
         {
