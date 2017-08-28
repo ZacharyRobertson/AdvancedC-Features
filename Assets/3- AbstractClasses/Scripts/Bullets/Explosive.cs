@@ -64,9 +64,9 @@ namespace AbstractClasses
                 //}
             }
         }
-        void OnCollisionEnter(Collider col)
+        void OnCollisionEnter(Collision col)
         {
-            if (col.tag == "Enemy")
+            if (col.collider.tag == "Enemy")
             {
                 Explode();
             }
