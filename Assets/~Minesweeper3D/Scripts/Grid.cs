@@ -34,7 +34,7 @@ namespace Minesweeper3D
         // Update is called once per frame
         void Update()
         {
-
+            DeactivateBlock();
         }
 
         Block SpawnBlock(Vector3 pos)
@@ -43,6 +43,7 @@ namespace Minesweeper3D
             GameObject clone = Instantiate(blockPrefab);
             clone.transform.position = pos; //Set the position of the clone
             Block currentBlock = clone.GetComponent<Block>();
+            GetAdjacentMineCountAt(currentBlock);
             return currentBlock;
         }
 
@@ -84,7 +85,74 @@ namespace Minesweeper3D
         public int GetAdjacentMineCountAt(Block b)
         {
             int count = 0;
-            return b;
+            //Loop throguh the elements and have each axis between -1 and 1
+            for (int x = -1; x <= 1; x++)
+            {
+                //calculate the adjacent element's index on the x axis
+                int desiredX = b.x + x;
+
+                // IF desired x is within range of the blocks array
+                if (desiredX < blocks.Length)
+                {
+                    //If the element at index is a mine
+                    if (b.isMine)
+                    {
+                        //Increment count by 1
+                        count++;
+                    }
+
+                }
+
+                for (int y = -1; y <= 1; y++)
+                {
+                    //Calculate the adjacent element's index on the y axis
+                    int desiredY = b.y + y;
+
+                    if (desiredY < blocks.Length)
+                    {
+                        //If the element at index is a mine
+                        if (b.isMine)
+                        {
+                            //Increment count by 1
+                            count++;
+                        }
+                    }
+
+                    for (int z = -1; z <= 1; z++)
+                    {
+                        int desiredZ = b.z + z;
+
+                        if(desiredZ < blocks.Length)
+                        {
+                            //If the element at index is a mine
+                            if (b.isMine)
+                            {
+                                //Increment count by 1
+                                count++;
+                            }
+                        }
+                    }
+                }
+                
+            }
+            return count;
         }
+
+        public void DeactivateBlock()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if(Input.GetMouseButtonDown(0))
+            {
+                if(Physics.Raycast(ray, out hit))
+                {
+                    if(hit.collider.tag == "Block")
+                    {
+                        hit.collider.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+
     }
 }
