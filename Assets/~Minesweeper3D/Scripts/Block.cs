@@ -16,13 +16,17 @@ namespace Minesweeper3D
 
 
         private bool isRevealed = false;
+        public bool isFlagged = false;
         private Renderer rend;
 
+        public Color startColor;
+        
 
         // Use this for initialization
         void Awake()
         {
             rend = GetComponent<Renderer>();
+            startColor = rend.material.color;
         }
         void Start()
         {
@@ -48,7 +52,7 @@ namespace Minesweeper3D
                 }
             }
         }
-        public void Reveal(int adjacentMines)
+        public void Reveal(int adjacentMines = 0)
         {
             //Flags the block as revealed
             isRevealed = true;
