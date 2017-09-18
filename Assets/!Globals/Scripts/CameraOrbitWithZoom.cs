@@ -7,13 +7,23 @@ public class CameraOrbitWithZoom : MonoBehaviour
     public Transform target;// The traget point to rotate around
     public float distance = 5f;//The distancebetween the camera and target
     public float sensitivity = 1f;//How sensitive the  input is for rotating
-
     public float disMin = .5f;//Minimum distance of camera
     public float disMax = 15f;//Maximum distance of camera
+
+    [Header("Camera Collison")]
+    public bool isEnabled = true;
+    public float colRadius = 1f;
+    public LayerMask ignoreLayers;
 
     //Store X and Y rotation in euler angles
     float x;
     float y;
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, colRadius);
+    }
 
     // Use this for initialization
     void Start()
@@ -40,13 +50,14 @@ public class CameraOrbitWithZoom : MonoBehaviour
     }
     void GetInput()
     {
-        if (Cursor.visible == false)
-        {
-            // Gather X and Y mouse offset  input to rotate camera (by sensitivity)
-            x += Input.GetAxis("Mouse X") * sensitivity;
-            // Opposite direction for Y because it inverted
-            y -= Input.GetAxis("Mouse Y") * sensitivity;
-        }
+            if (Cursor.visible == false)
+            {
+                // Gather X and Y mouse offset  input to rotate camera (by sensitivity)
+                x += Input.GetAxis("Mouse X") * sensitivity;
+                // Opposite direction for Y because it inverted
+                y -= Input.GetAxis("Mouse Y") * sensitivity;
+            }
+        
         // Get Mouse ScrollWheel input offset for changing distance
         float inputScroll = Input.GetAxis("Mouse ScrollWheel");
         distance = Mathf.Clamp(distance - inputScroll, disMin, disMax);
@@ -60,8 +71,11 @@ public class CameraOrbitWithZoom : MonoBehaviour
             // Convert x and y rotations to Quaternion using euler
             Quaternion rotation = Quaternion.Euler(y, x, 0);
 
+            //Perform a Raycast to hit the wall
+            float dist = GetCollisionDistance();
+
             // Calculate new position offset  using rotation
-            Vector3 negDistance = new Vector3(0, 0, -distance);
+            Vector3 negDistance = new Vector3(0, 0, -dist);
             Vector3 position = rotation * negDistance + target.position;
 
             //Apply rotation and position to transform
@@ -69,8 +83,23 @@ public class CameraOrbitWithZoom : MonoBehaviour
             transform.position = position;
         }
     }
+    float GetCollisionDistance()
+    {
+        float desiredDis = distance;
 
-    // Update is called once per frame
+        Quaternion rotation = Quaternion.Euler(y, x, 0);
+        Vector3 back = rotation * new Vector3(0, 0, -distance);
+
+        Ray targetRay = new Ray(target.position, back);
+        RaycastHit hit;
+
+        if (Physics.SphereCast(targetRay, colRadius, out hit, desiredDis, ~ignoreLayers))
+        {
+            Vector3 point = hit.point + hit.normal * colRadius;
+            desiredDis = Vector3.Distance(target.position, point);
+        }
+        return desiredDis;
+    }
     void LateUpdate()
     {
         //If Right Mouse button is pressed
