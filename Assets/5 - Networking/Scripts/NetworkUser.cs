@@ -10,10 +10,14 @@ namespace Networking
     {
         public Camera cam;
         public AudioListener audioListener;
+        [Range(0,1)]
+        public float lerpRate = 1f;
+
+        [SyncVar] Vector3 syncPosition;
+        [SyncVar] Quaternion syncRotation;
 
         private Player player;
 
-        // Use this for initialization
         void Start()
         {
             player = GetComponent<Player>();
@@ -23,8 +27,6 @@ namespace Networking
                 audioListener.enabled = false;
             }
         }
-
-        // Update is called once per frame
         void Update()
         {
             if (isLocalPlayer)
@@ -37,7 +39,36 @@ namespace Networking
                 {
                     player.Jump();
                 }
+                //Send New Position to Sever
+                Rigidbody rigid = player.rigid;
+                Cmd_SendPositionToServer(rigid.position);
+                Cmd_SendRotationToServer(rigid.rotation);
             }
+            else
+            {
+                LerpPosition();
+                lerpRotation();
+            }
+        }
+        [Command]
+        void Cmd_SendPositionToServer(Vector3 position)
+        {
+            syncPosition = position;
+        }
+        [Command]
+        void Cmd_SendRotationToServer(Quaternion rotation)
+        {
+            syncRotation = rotation;
+        }
+        void LerpPosition()
+        {
+            Rigidbody rigid = player.rigid;
+            rigid.position = Vector3.Lerp(rigid.position, syncPosition, lerpRate);   
+        }
+        void lerpRotation()
+        {
+            Rigidbody rigid = player.rigid;
+            rigid.rotation = Quaternion.Lerp(rigid.rotation, syncRotation, lerpRate);
         }
     }
 }

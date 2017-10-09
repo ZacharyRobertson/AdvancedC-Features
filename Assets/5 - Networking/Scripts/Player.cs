@@ -11,7 +11,7 @@ namespace Networking
         public float jumpHeight = 10.0f;
 
         private bool isGrounded = false;
-        private Rigidbody rigid;
+        [HideInInspector] public Rigidbody rigid;
 
         // Use this for initialization
         void Start()
