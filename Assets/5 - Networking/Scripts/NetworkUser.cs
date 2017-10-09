@@ -27,6 +27,16 @@ namespace Networking
                 audioListener.enabled = false;
             }
         }
+        void FixedUpdate()
+        {
+            if(isLocalPlayer)
+            {
+                //Send New Position to Sever
+                Rigidbody rigid = player.rigid;
+                Cmd_SendPositionToServer(rigid.position);
+                Cmd_SendRotationToServer(rigid.rotation);
+            }
+        }
         void Update()
         {
             if (isLocalPlayer)
@@ -38,11 +48,7 @@ namespace Networking
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     player.Jump();
-                }
-                //Send New Position to Sever
-                Rigidbody rigid = player.rigid;
-                Cmd_SendPositionToServer(rigid.position);
-                Cmd_SendRotationToServer(rigid.rotation);
+                } 
             }
             else
             {
