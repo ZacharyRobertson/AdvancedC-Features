@@ -18,10 +18,9 @@ namespace Networking
         // Update is called once per frame
         void Update()
         {
-            float h = Input.GetAxis("Mouse X");
-            h += Input.GetAxis("Horizontal");
+            float h = Input.GetAxis("Horizontal");
             float v = Input.GetAxis("Vertical");
-            player.Move(v, h);
+           player.Move(v, h);
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 player.Jump();

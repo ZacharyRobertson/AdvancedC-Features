@@ -41,8 +41,7 @@ namespace Networking
         {
             if (isLocalPlayer)
             {
-                float h = Input.GetAxis("Mouse X");
-                h += Input.GetAxis("Horizontal");
+                float h = Input.GetAxis("Horizontal");
                 float v = Input.GetAxis("Vertical");
                 player.Move(v, h);
                 if (Input.GetKeyDown(KeyCode.Space))
